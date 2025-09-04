@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backendweb
+  namespace: demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backendweb
+  template:
+    metadata:
+      labels:
+        app: backendweb
+    spec:
+      containers:
+      - name: backendweb
+        image: jamong1014.azurecr.io/backendweb:latest   # 🔑 ACR 이미지
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backendweb
+  namespace: demo
+spec:
+  type: LoadBalancer
+  selector:
+    app: backendweb
+  ports:
+  - port: 80
+    targetPort: 80
