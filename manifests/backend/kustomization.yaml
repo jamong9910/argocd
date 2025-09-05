@@ -1,0 +1,6 @@
+resources:
+- deploy.yaml
+
+images:
+- name: jamong1014.azurecr.io/backendweb
+  newTag: REPLACED_BY_CI
