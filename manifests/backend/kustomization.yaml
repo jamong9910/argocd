@@ -4,6 +4,6 @@ resources:
 images:
 - name: jamong1014.azurecr.io/backendweb
   newName: jamong1014.azurecr.io/backendweb
-  newTag: b0cc904586430a1cd69a97b6a73ec87a6d032002
+  newTag: 0e7ca40822d51f4630dedf5fdc0ccfdb62a0353e
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
