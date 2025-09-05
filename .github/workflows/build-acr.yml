@@ -8,6 +8,9 @@ on:
 env:
   IMAGE: ${{ vars.ACR_LOGIN_SERVER }}/backendweb   # jamong1014.azurecr.io/backendweb
 
+permissions:
+  contents: write   # ✅ Git 커밋/푸시하려면 필요
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -39,3 +42,21 @@ jobs:
           echo "✅ Pushed:"
           echo " - $IMAGE:latest"
           echo " - $IMAGE:${{ github.sha }}"
+
+      # ===== 여기부터 GitOps 매니페스트에 새 태그 반영 =====
+      - name: Install kustomize  # ✅ kustomize 설치
+        uses: imranismail/setup-kustomize@v2
+        with:
+          kustomize-version: '5.4.1'
+
+      - name: Update manifests with new image tag  # ✅ 태그 주입 + 커밋/푸시
+        run: |
+          cd manifests/backend
+          # kustomization.yaml 반드시 존재해야 함
+          kustomize edit set image jamong1014.azurecr.io/backendweb=${{ env.IMAGE }}:${{ github.sha }}
+
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add kustomization.yaml
+          git commit -m "deploy backendweb ${{ github.sha }}" || echo "No changes to commit"
+          git push
