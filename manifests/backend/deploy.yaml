@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: backendweb
-        image: jamong1014.azurecr.io/backendweb:latest   # 🔑 ACR 이미지
+        image: jamong1014.azurecr.io/backendweb   # 👈 태그 제거
         ports:
         - containerPort: 80
 ---
